@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TankWise UAE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" crossorigin="anonymous"></script>
+<style>
+:root{
+  --bg:#0B1220; --card:#121D2E; --card2:#15223A; --accent:#A3E635; --accent2:#D9F99D;
+  --text:#F5F7FA; --muted:#8B98AC; --border:#22304A; --danger:#F87171;
+  color-scheme: dark;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+html,body{height:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Inter',-apple-system,sans-serif;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  -webkit-font-smoothing:antialiased;
+}
+body.ar{font-family:'Tajawal','Inter',-apple-system,sans-serif;}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);}
+#app{max-width:480px;margin:0 auto;min-height:100%;position:relative;padding-bottom:84px;}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,18,32,.92);backdrop-filter:blur(10px);padding:16px 18px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
+.app-icon{flex:none;width:38px;height:38px;border-radius:11px;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(163,230,53,.3);}
+.app-icon svg,.app-icon i{width:17px;height:17px;color:#0B1220;font-size:17px;}
+header.top h1{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;}
+header.top .sub{color:var(--muted);font-size:12.5px;margin-top:2px;}
+main{padding:14px 16px 20px;}
+.view{display:none;animation:fade .2s ease;}
+.view.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 4px 16px rgba(0,0,0,.25);}
+.card h3{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.row{display:flex;justify-content:space-between;align-items:center;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.stat{background:var(--card2,#15223a);border-radius:14px;padding:12px;}
+.stat .n{font-size:20px;font-weight:800;color:var(--accent);}
+.stat .l{font-size:11px;color:var(--muted);margin-top:2px;}
+.big{font-size:30px;font-weight:800;}
+.pill{display:inline-block;background:rgba(163,230,53,.14);color:var(--accent);font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;}
+.pill.muted{background:rgba(139,152,172,.14);color:var(--muted);}
+label{font-size:12.5px;color:var(--muted);display:block;margin:10px 0 5px;}
+input,select{width:100%;background:#0E1A2C;border:1px solid var(--border);color:var(--text);padding:12px 12px;border-radius:12px;font-size:15px;font-family:inherit;}
+input:focus,select:focus{outline:none;border-color:var(--accent);}
+.btn{width:100%;padding:13px;border-radius:12px;border:none;font-weight:700;font-size:14.5px;cursor:pointer;font-family:inherit;}
+.btn-primary{background:var(--accent);color:#0B1220;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-danger{background:rgba(248,113,113,.12);color:var(--danger);border:1px solid rgba(248,113,113,.3);}
+.btn-row{display:flex;gap:10px;margin-top:12px;}
+.tabbar{display:flex;background:#0E1A2C;border-radius:12px;padding:4px;margin-bottom:14px;}
+.tabbar button{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);border-radius:9px;font-weight:600;font-size:13px;font-family:inherit;cursor:pointer;}
+.tabbar button.active{background:var(--accent);color:#0B1220;}
+.vcard{border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;cursor:pointer;}
+.vcard.selected{border-color:var(--accent);background:rgba(163,230,53,.06);}
+.hist-item{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.hist-item:last-child{border-bottom:none;}
+nav.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(18,29,46,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));z-index:10;}
+nav.bottom button{flex:1;background:none;border:none;color:var(--muted);font-size:10.5px;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;cursor:pointer;}
+nav.bottom button.active{color:var(--accent);}
+nav.bottom .ic{display:flex;}
+nav.bottom .ic svg{width:21px;height:21px;}
+.qa-ic{color:var(--accent);}
+.qa-ic svg{width:26px;height:26px;}
+.empty{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
+.small{font-size:11.5px;color:var(--muted);}
+.result-hero{background:linear-gradient(135deg,rgba(163,230,53,.12),rgba(163,230,53,.03));border:1px solid rgba(163,230,53,.25);border-radius:16px;padding:16px;margin-top:12px;}
+.lang-row{display:flex;gap:10px;margin-top:6px;}
+.lang-btn{flex:1;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0E1A2C;color:var(--text);font-family:inherit;font-weight:600;font-size:13.5px;cursor:pointer;}
+.lang-btn.active{border-color:var(--accent);background:rgba(163,230,53,.1);color:var(--accent);}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="app-icon"><i class="fa-solid fa-gas-pump"></i></div>
+    <div>
+      <h1 id="hdrTitle">TankWise UAE</h1>
+      <div class="sub" id="hdrSub">Smart petrol &amp; trip cost calculator</div>
+    </div>
+  </header>
+  <main id="main"></main>
+  <nav class="bottom">
+    <button data-v="home"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span><span class="navlbl" data-k="home"></span></button>
+    <button data-v="calc"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></span><span class="navlbl" data-k="calculator"></span></button>
+    <button data-v="vehicles"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8l1.5 5"/><rect x="2.5" y="13" width="19" height="5" rx="1.5"/><circle cx="7" cy="18.5" r="1.5"/><circle cx="17" cy="18.5" r="1.5"/></svg></span><span class="navlbl" data-k="vehicles"></span></button>
+    <button data-v="history"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><span class="navlbl" data-k="history"></span></button>
+    <button data-v="settings"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="navlbl" data-k="settings"></span></button>
+  </nav>
+</div>
+<script>
+const I18N={
+  en:{appName:'TankWise UAE',tagline:'Smart petrol & trip cost calculator',
+    home:'Home',calculator:'Calculator',vehicles:'Vehicles',history:'History',settings:'Settings',
+    selectedVehicle:'Selected vehicle',noVehicle:'No vehicle',
+    petrolPrices:'UAE Petrol Prices',manualDemo:'Manual / Demo',live:'Live',effective:'Effective',
+    tripCostCard:'Trip Cost',estimateJourney:'Estimate a journey',fillUpCard:'Fill-up',refuelCost:'Refuel cost',
+    thisMonth:'This Month',fuelSpending:'Fuel spending',vehicleEconomy:'Vehicle economy',
+    recentTrips:'Recent Trips',noTrips:'No trips saved yet.',
+    tripCostTab:'Trip Cost',fillUpTab:'Fill-up',
+    distanceKm:'Distance (km)',vehicleEconLbl:'Vehicle economy (km/L)',petrolGrade:'Petrol grade',
+    currentLevelOpt:'Current petrol level (L, optional)',calculate:'Calculate',
+    tripCost:'Trip cost',petrolNeeded:'Petrol needed',costPerKm:'Cost per km',petrolRemaining:'Petrol remaining',
+    remainingRange:'Remaining range',saveTrip:'Save trip',saved:'Saved ✓',share:'Share',copied:'Copied ✓',
+    validDistEcon:'Enter a valid distance and economy.',
+    tankCapacity:'Tank capacity (L)',currentLevel:'Current petrol level (L)',targetFill:'Target fill',
+    fillingCost:'Filling cost',litresRequired:'Litres required',levelAfter:'Level after refuel',
+    validTank:'Enter a valid tank capacity.',
+    yourVehicles:'Your Vehicles',demo:'Demo',edit:'Edit',delete:'Delete',
+    addVehicle:'Add Vehicle',editVehicle:'Edit Vehicle',vehicleName:'Vehicle name',manufacturer:'Manufacturer',
+    model:'Model',year:'Year',economyLbl:'Economy (km/L)',preferredGrade:'Preferred grade',saveVehicle:'Save Vehicle',
+    pleaseEnterName:'Please enter a vehicle name.',
+    analytics:'Analytics',totalFuelSpend:'Total fuel spend',totalDistance:'Total distance',
+    totalFuelUsed:'Total fuel used',avgCostKm:'Avg cost / km',avgEfficiency:'Average efficiency',
+    allTrips:'All Trips',
+    preferences:'Preferences',currency:'Currency',distanceUnit:'Distance unit',fuelUnit:'Fuel unit',
+    theme:'Theme',kilometres:'Kilometres',litres:'Litres',dark:'Dark',defaultVehicle:'Default vehicle',
+    language:'Language',priceOverride:'Petrol Prices (manual override)',
+    noBackend:"Live backend price updates aren't wired up yet — set figures manually here.",
+    effectiveMonth:'Effective month',savePrices:'Save Prices',clearHistory:'Clear Trip History',
+    confirmClear:'Clear all saved trips? This cannot be undone.'},
+  ar:{appName:'تانك وايز الإمارات',tagline:'حاسبة ذكية لتكلفة الوقود والرحلات',
+    home:'الرئيسية',calculator:'الحاسبة',vehicles:'المركبات',history:'السجل',settings:'الإعدادات',
+    selectedVehicle:'المركبة المختارة',noVehicle:'لا توجد مركبة',
+    petrolPrices:'أسعار الوقود في الإمارات',manualDemo:'يدوي / تجريبي',live:'مباشر',effective:'سارٍ من',
+    tripCostCard:'تكلفة الرحلة',estimateJourney:'قدّر تكلفة رحلتك',fillUpCard:'التعبئة',refuelCost:'تكلفة التعبئة',
+    thisMonth:'هذا الشهر',fuelSpending:'إنفاق الوقود',vehicleEconomy:'كفاءة المركبة',
+    recentTrips:'الرحلات الأخيرة',noTrips:'لا توجد رحلات محفوظة بعد.',
+    tripCostTab:'تكلفة الرحلة',fillUpTab:'التعبئة',
+    distanceKm:'المسافة (كم)',vehicleEconLbl:'كفاءة المركبة (كم/لتر)',petrolGrade:'نوع الوقود',
+    currentLevelOpt:'مستوى الوقود الحالي (لتر، اختياري)',calculate:'احسب',
+    tripCost:'تكلفة الرحلة',petrolNeeded:'الوقود المطلوب',costPerKm:'التكلفة لكل كم',petrolRemaining:'الوقود المتبقي',
+    remainingRange:'المدى المتبقي',saveTrip:'حفظ الرحلة',saved:'تم الحفظ ✓',share:'مشاركة',copied:'تم النسخ ✓',
+    validDistEcon:'أدخل مسافة وكفاءة صحيحتين.',
+    tankCapacity:'سعة الخزان (لتر)',currentLevel:'مستوى الوقود الحالي (لتر)',targetFill:'نسبة التعبئة المستهدفة',
+    fillingCost:'تكلفة التعبئة',litresRequired:'اللترات المطلوبة',levelAfter:'المستوى بعد التعبئة',
+    validTank:'أدخل سعة خزان صحيحة.',
+    yourVehicles:'مركباتك',demo:'تجريبي',edit:'تعديل',delete:'حذف',
+    addVehicle:'إضافة مركبة',editVehicle:'تعديل المركبة',vehicleName:'اسم المركبة',manufacturer:'الشركة المصنعة',
+    model:'الطراز',year:'سنة الصنع',economyLbl:'الكفاءة (كم/لتر)',preferredGrade:'نوع الوقود المفضل',saveVehicle:'حفظ المركبة',
+    pleaseEnterName:'يرجى إدخال اسم المركبة.',
+    analytics:'التحليلات',totalFuelSpend:'إجمالي إنفاق الوقود',totalDistance:'إجمالي المسافة',
+    totalFuelUsed:'إجمالي الوقود المستهلك',avgCostKm:'متوسط التكلفة / كم',avgEfficiency:'متوسط الكفاءة',
+    allTrips:'جميع الرحلات',
+    preferences:'التفضيلات',currency:'العملة',distanceUnit:'وحدة المسافة',fuelUnit:'وحدة الوقود',
+    theme:'المظهر',kilometres:'كيلومتر',litres:'لتر',dark:'داكن',defaultVehicle:'المركبة الافتراضية',
+    language:'اللغة',priceOverride:'أسعار الوقود (تعديل يدوي)',
+    noBackend:'تحديثات الأسعار التلقائية غير مُفعّلة بعد — أدخل القيم يدويًا هنا.',
+    effectiveMonth:'الشهر الساري',savePrices:'حفظ الأسعار',clearHistory:'مسح سجل الرحلات',
+    confirmClear:'هل تريد مسح جميع الرحلات المحفوظة؟ لا يمكن التراجع عن هذا.'}
+};
+const DEMO_VEHICLE={id:'demo1',name:'My Corolla',make:'Toyota',model:'Corolla Hybrid',year:2025,tank:43,economy:20.9,grade:'Special 95',demo:true};
+const DEMO_PRICES={'E-Plus 91':3.97,'Special 95':4.04,'Super 98':4.16,effective:'November 2026',updated:'Demo data — set manually in Settings',manual:true};
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+let state={
+  vehicles: load('tw_vehicles',[DEMO_VEHICLE]),
+  trips: load('tw_trips',[]),
+  prices: load('tw_prices',DEMO_PRICES),
+  activeVehicleId: load('tw_active', DEMO_VEHICLE.id),
+  lang: load('tw_lang','en'),
+  calcTab:'trip', view:'home'
+};
+function t(k){return (I18N[state.lang]&&I18N[state.lang][k])||I18N.en[k]||k;}
+function persist(){save('tw_vehicles',state.vehicles);save('tw_trips',state.trips);save('tw_prices',state.prices);save('tw_active',state.activeVehicleId);save('tw_lang',state.lang);}
+function aed(n){return 'AED '+(isFinite(n)?n:0).toFixed(2);}
+function activeVehicle(){return state.vehicles.find(v=>v.id===state.activeVehicleId)||state.vehicles[0];}
+function priceFor(grade){return state.prices[grade]??0;}
+
+function applyLangChrome(){
+  document.documentElement.lang=state.lang;
+  document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('ar',state.lang==='ar');
+  document.getElementById('hdrTitle').textContent=t('appName');
+  document.getElementById('hdrSub').textContent=t('tagline');
+  document.querySelectorAll('.navlbl').forEach(el=>el.textContent=t(el.dataset.k));
+}
+
+function setView(v){state.view=v;document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));render();}
+document.querySelectorAll('nav.bottom button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
+
+function render(){
+  applyLangChrome();
+  const m=document.getElementById('main');
+  if(state.view==='home') m.innerHTML=homeView();
+  else if(state.view==='calc') m.innerHTML=calcView();
+  else if(state.view==='vehicles') m.innerHTML=vehiclesView();
+  else if(state.view==='history') m.innerHTML=historyView();
+  else if(state.view==='settings') m.innerHTML=settingsView();
+  bindDynamic();
+}
+
+function homeView(){
+  const v=activeVehicle();
+  const trips=state.trips;
+  const monthSpend=trips.filter(tr=>tr.date.slice(0,7)===new Date().toISOString().slice(0,7)).reduce((s,tr)=>s+tr.cost,0);
+  const recent=trips.slice(-3).reverse();
+  return `
+  <div class="card">
+    <div class="row"><div>
+      <div class="small">${t('selectedVehicle')}</div>
+      <div style="font-size:17px;font-weight:700;margin-top:2px;">${v?v.name:t('noVehicle')}</div>
+    </div><span class="pill">${v?v.grade:''}</span></div>
+  </div>
+  <div class="card">
+    <h3>${t('petrolPrices')} <span class="pill ${state.prices.manual?'muted':''}">${state.prices.manual?t('manualDemo'):t('live')}</span></h3>
+    <div class="grid3">
+      ${['E-Plus 91','Special 95','Super 98'].map(g=>`<div class="stat"><div class="n">${priceFor(g).toFixed(2)}</div><div class="l">${g}</div></div>`).join('')}
+    </div>
+    <div class="small" style="margin-top:10px;">${t('effective')} ${state.prices.effective} · ${state.prices.updated}</div>
+  </div>
+  <div class="grid2">
+    <div class="card" style="cursor:pointer" onclick="state.calcTab='trip';setView('calc')">
+      <h3>${t('tripCostCard')}</h3><div class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="14.5 9.5 10 10 9.5 14.5 14 14 14.5 9.5"/></svg></div><div class="small" style="margin-top:6px;">${t('estimateJourney')}</div>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="state.calcTab='fill';setView('calc')">
+      <h3>${t('fillUpCard')}</h3><div class="qa-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15"/><path d="M3 21h11"/><path d="M13 9h2l3 3v6a1.5 1.5 0 0 1-3 0v-2a1 1 0 0 0-1-1h-1"/><path d="M6 6h5"/></svg></div><div class="small" style="margin-top:6px;">${t('refuelCost')}</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>${t('thisMonth')}</h3>
+    <div class="grid2">
+      <div class="stat"><div class="n">${aed(monthSpend)}</div><div class="l">${t('fuelSpending')}</div></div>
+      <div class="stat"><div class="n">${v?v.economy:'–'} km/L</div><div class="l">${t('vehicleEconomy')}</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>${t('recentTrips')}</h3>
+    ${recent.length? recent.map(tr=>`<div class="hist-item"><span>${tr.distance} km</span><span class="small">${tr.date}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
+  </div>`;
+}
+
+function calcView(){
+  return `
+  <div class="tabbar">
+    <button id="tabTrip" class="${state.calcTab==='trip'?'active':''}">${t('tripCostTab')}</button>
+    <button id="tabFill" class="${state.calcTab==='fill'?'active':''}">${t('fillUpTab')}</button>
+  </div>
+  ${state.calcTab==='trip'? tripCalc() : fillCalc()}`;
+}
+
+function tripCalc(){
+  const v=activeVehicle();
+  return `
+  <div class="card">
+    <label>${t('distanceKm')}</label><input type="number" id="t_dist" placeholder="45" min="0">
+    <label>${t('vehicleEconLbl')}</label><input type="number" id="t_econ" value="${v?v.economy:''}" min="0.1">
+    <label>${t('petrolGrade')}</label>
+    <select id="t_grade">${['E-Plus 91','Special 95','Super 98'].map(g=>`<option ${v&&v.grade===g?'selected':''}>${g}</option>`).join('')}</select>
+    <label>${t('currentLevelOpt')}</label><input type="number" id="t_level" placeholder="20" min="0">
+    <button class="btn btn-primary" style="margin-top:14px" id="calcTripBtn">${t('calculate')}</button>
+  </div>
+  <div id="tripResult"></div>`;
+}
+function fillCalc(){
+  const v=activeVehicle();
+  return `
+  <div class="card">
+    <label>${t('tankCapacity')}</label><input type="number" id="f_tank" value="${v?v.tank:''}" min="1">
+    <label>${t('currentLevel')}</label><input type="number" id="f_level" placeholder="10" min="0">
+    <label>${t('targetFill')}</label>
+    <select id="f_target"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option></select>
+    <label>${t('petrolGrade')}</label>
+    <select id="f_grade">${['E-Plus 91','Special 95','Super 98'].map(g=>`<option ${v&&v.grade===g?'selected':''}>${g}</option>`).join('')}</select>
+    <button class="btn btn-primary" style="margin-top:14px" id="calcFillBtn">${t('calculate')}</button>
+  </div>
+  <div id="fillResult"></div>`;
+}
+
+function bindDynamic(){
+  const tt=document.getElementById('tabTrip'), tf=document.getElementById('tabFill');
+  if(tt) tt.onclick=()=>{state.calcTab='trip';render();};
+  if(tf) tf.onclick=()=>{state.calcTab='fill';render();};
+
+  const ctb=document.getElementById('calcTripBtn');
+  if(ctb) ctb.onclick=()=>{
+    const dist=parseFloat(document.getElementById('t_dist').value)||0;
+    const econ=parseFloat(document.getElementById('t_econ').value)||0;
+    const grade=document.getElementById('t_grade').value;
+    const level=parseFloat(document.getElementById('t_level').value);
+    if(dist<=0||econ<=0){document.getElementById('tripResult').innerHTML=`<div class="card"><div class="empty">${t('validDistEcon')}</div></div>`;return;}
+    const fuelNeeded=dist/econ;
+    const price=priceFor(grade);
+    const cost=fuelNeeded*price;
+    const perKm=cost/dist;
+    let remain='', remainRange='';
+    if(!isNaN(level)){
+      const after=level-fuelNeeded;
+      remain=`<div class="row" style="margin-top:8px"><span class="small">${t('petrolRemaining')}</span><span>${after.toFixed(1)} L</span></div>`;
+      remainRange=`<div class="row"><span class="small">${t('remainingRange')}</span><span>${Math.max(0,after*econ).toFixed(0)} km</span></div>`;
+    }
+    window._lastTrip={distance:dist,cost,grade,fuel:fuelNeeded,date:new Date().toISOString().slice(0,10)};
+    document.getElementById('tripResult').innerHTML=`
+    <div class="result-hero">
+      <div class="small">${t('tripCost')}</div><div class="big">${aed(cost)}</div>
+      <div class="row" style="margin-top:10px"><span class="small">${t('petrolNeeded')}</span><span>${fuelNeeded.toFixed(2)} L</span></div>
+      <div class="row"><span class="small">${t('costPerKm')}</span><span>${aed(perKm)}</span></div>
+      ${remain}${remainRange}
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="saveTripBtn">${t('saveTrip')}</button>
+        <button class="btn btn-ghost" id="shareTripBtn">${t('share')}</button>
+      </div>
+    </div>`;
+    document.getElementById('saveTripBtn').onclick=()=>{
+      state.trips.push({...window._lastTrip, id:Date.now()+''});
+      persist();
+      document.getElementById('saveTripBtn').textContent=t('saved');
+    };
+    document.getElementById('shareTripBtn').onclick=()=>{
+      const txt=`TankWise UAE: ${dist} km, ${fuelNeeded.toFixed(2)} L, ${aed(cost)} (${grade})`;
+      if(navigator.share){navigator.share({text:txt}).catch(()=>{});}
+      else{navigator.clipboard?.writeText(txt);document.getElementById('shareTripBtn').textContent=t('copied');}
+    };
+  };
+
+  const cfb=document.getElementById('calcFillBtn');
+  if(cfb) cfb.onclick=()=>{
+    const tank=parseFloat(document.getElementById('f_tank').value)||0;
+    const level=parseFloat(document.getElementById('f_level').value)||0;
+    const target=parseFloat(document.getElementById('f_target').value);
+    const grade=document.getElementById('f_grade').value;
+    if(tank<=0){document.getElementById('fillResult').innerHTML=`<div class="card"><div class="empty">${t('validTank')}</div></div>`;return;}
+    const targetL=Math.min(tank, tank*target);
+    const litres=Math.max(0, Math.min(targetL-level, tank-level));
+    const price=priceFor(grade);
+    const cost=litres*price;
+    const after=level+litres;
+    const pct=(after/tank*100).toFixed(0);
+    document.getElementById('fillResult').innerHTML=`
+    <div class="result-hero">
+      <div class="small">${t('fillingCost')}</div><div class="big">${aed(cost)}</div>
+      <div class="row" style="margin-top:10px"><span class="small">${t('litresRequired')}</span><span>${litres.toFixed(1)} L</span></div>
+      <div class="row"><span class="small">${t('levelAfter')}</span><span>${after.toFixed(1)} L (${pct}%)</span></div>
+    </div>`;
+  };
+
+  bindVehicleEvents();
+  bindSettingsEvents();
+}
+
+function vehiclesView(){
+  return `
+  <div class="card">
+    <h3>${t('yourVehicles')}</h3>
+    ${state.vehicles.map(v=>`
+      <div class="vcard ${v.id===state.activeVehicleId?'selected':''}" data-select="${v.id}">
+        <div class="row"><strong>${v.name}</strong>${v.demo?`<span class="pill muted">${t('demo')}</span>`:''}</div>
+        <div class="small">${v.make} ${v.model} · ${v.year}</div>
+        <div class="small">${v.tank} L · ${v.economy} km/L · ${v.grade}</div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-edit="${v.id}">${t('edit')}</button>
+          <button class="btn btn-danger" data-del="${v.id}">${t('delete')}</button>
+        </div>
+      </div>`).join('')}
+  </div>
+  <div class="card">
+    <h3 id="formTitle">${t('addVehicle')}</h3>
+    <input type="hidden" id="v_id">
+    <label>${t('vehicleName')}</label><input id="v_name" placeholder="My Sedan">
+    <div class="grid2">
+      <div><label>${t('manufacturer')}</label><input id="v_make"></div>
+      <div><label>${t('model')}</label><input id="v_model"></div>
+    </div>
+    <div class="grid2">
+      <div><label>${t('year')}</label><input type="number" id="v_year"></div>
+      <div><label>${t('tankCapacity')}</label><input type="number" id="v_tank"></div>
+    </div>
+    <div class="grid2">
+      <div><label>${t('economyLbl')}</label><input type="number" step="0.1" id="v_econ"></div>
+      <div><label>${t('preferredGrade')}</label><select id="v_grade"><option>E-Plus 91</option><option>Special 95</option><option>Super 98</option></select></div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:14px" id="saveVehicleBtn">${t('saveVehicle')}</button>
+  </div>`;
+}
+function bindVehicleEvents(){
+  document.querySelectorAll('[data-select]').forEach(el=>el.onclick=(e)=>{
+    if(e.target.closest('button'))return;
+    state.activeVehicleId=el.dataset.select;persist();render();
+  });
+  document.querySelectorAll('[data-del]').forEach(el=>el.onclick=(e)=>{
+    e.stopPropagation();
+    state.vehicles=state.vehicles.filter(v=>v.id!==el.dataset.del);
+    if(state.activeVehicleId===el.dataset.del && state.vehicles[0]) state.activeVehicleId=state.vehicles[0].id;
+    persist();render();
+  });
+  document.querySelectorAll('[data-edit]').forEach(el=>el.onclick=(e)=>{
+    e.stopPropagation();
+    const v=state.vehicles.find(x=>x.id===el.dataset.edit); if(!v)return;
+    document.getElementById('formTitle').textContent=t('editVehicle');
+    document.getElementById('v_id').value=v.id;
+    document.getElementById('v_name').value=v.name;
+    document.getElementById('v_make').value=v.make;
+    document.getElementById('v_model').value=v.model;
+    document.getElementById('v_year').value=v.year;
+    document.getElementById('v_tank').value=v.tank;
+    document.getElementById('v_econ').value=v.economy;
+    document.getElementById('v_grade').value=v.grade;
+  });
+  const sv=document.getElementById('saveVehicleBtn');
+  if(sv) sv.onclick=()=>{
+    const id=document.getElementById('v_id').value || Date.now()+'';
+    const name=document.getElementById('v_name').value.trim();
+    if(!name){alert(t('pleaseEnterName'));return;}
+    const vh={id,name,make:document.getElementById('v_make').value,model:document.getElementById('v_model').value,
+      year:parseInt(document.getElementById('v_year').value)||'',tank:parseFloat(document.getElementById('v_tank').value)||0,
+      economy:parseFloat(document.getElementById('v_econ').value)||0, grade:document.getElementById('v_grade').value};
+    const idx=state.vehicles.findIndex(v=>v.id===id);
+    if(idx>-1) state.vehicles[idx]=vh; else {state.vehicles.push(vh); state.activeVehicleId=id;}
+    persist();render();
+  };
+}
+
+function historyView(){
+  const trips=[...state.trips].reverse();
+  const totalKm=state.trips.reduce((s,tr)=>s+tr.distance,0);
+  const totalFuel=state.trips.reduce((s,tr)=>s+tr.fuel,0);
+  const totalCost=state.trips.reduce((s,tr)=>s+tr.cost,0);
+  const avgEcon=totalFuel>0?(totalKm/totalFuel).toFixed(1):'–';
+  const avgPerKm=totalKm>0?(totalCost/totalKm):0;
+  return `
+  <div class="card"><h3>${t('analytics')}</h3>
+    <div class="grid2">
+      <div class="stat"><div class="n">${aed(totalCost)}</div><div class="l">${t('totalFuelSpend')}</div></div>
+      <div class="stat"><div class="n">${totalKm.toFixed(0)} km</div><div class="l">${t('totalDistance')}</div></div>
+      <div class="stat"><div class="n">${totalFuel.toFixed(1)} L</div><div class="l">${t('totalFuelUsed')}</div></div>
+      <div class="stat"><div class="n">${aed(avgPerKm)}</div><div class="l">${t('avgCostKm')}</div></div>
+    </div>
+    <div class="small" style="margin-top:10px;">${t('avgEfficiency')}: ${avgEcon} km/L</div>
+  </div>
+  <div class="card"><h3>${t('allTrips')}</h3>
+  ${trips.length? trips.map(tr=>`<div class="hist-item"><span>${tr.date}</span><span>${tr.distance} km · ${tr.grade}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
+  </div>`;
+}
+
+function settingsView(){
+  return `
+  <div class="card"><h3>${t('preferences')}</h3>
+    <div class="row"><span class="small">${t('currency')}</span><span class="pill">AED</span></div>
+    <div class="row" style="margin-top:8px"><span class="small">${t('distanceUnit')}</span><span class="pill">${t('kilometres')}</span></div>
+    <div class="row" style="margin-top:8px"><span class="small">${t('fuelUnit')}</span><span class="pill">${t('litres')}</span></div>
+    <div class="row" style="margin-top:8px"><span class="small">${t('theme')}</span><span class="pill">${t('dark')}</span></div>
+    <label>${t('defaultVehicle')}</label>
+    <select id="s_default">${state.vehicles.map(v=>`<option value="${v.id}" ${v.id===state.activeVehicleId?'selected':''}>${v.name}</option>`).join('')}</select>
+    <label>${t('language')}</label>
+    <div class="lang-row">
+      <button type="button" class="lang-btn ${state.lang==='en'?'active':''}" data-lang="en">English</button>
+      <button type="button" class="lang-btn ${state.lang==='ar'?'active':''}" data-lang="ar">العربية</button>
+    </div>
+  </div>
+  <div class="card"><h3>${t('priceOverride')}</h3>
+    <div class="small">${t('noBackend')}</div>
+    ${['E-Plus 91','Special 95','Super 98'].map(g=>`<label>${g} (AED/L)</label><input type="number" step="0.01" class="price-input" data-grade="${g}" value="${priceFor(g)}">`).join('')}
+    <label>${t('effectiveMonth')}</label><input id="s_eff" value="${state.prices.effective}">
+    <button class="btn btn-primary" style="margin-top:14px" id="savePricesBtn">${t('savePrices')}</button>
+  </div>
+  <div class="card">
+    <button class="btn btn-danger" id="clearHistBtn">${t('clearHistory')}</button>
+  </div>`;
+}
+function bindSettingsEvents(){
+  const sd=document.getElementById('s_default');
+  if(sd) sd.onchange=(e)=>{state.activeVehicleId=e.target.value;persist();};
+  document.querySelectorAll('.lang-btn').forEach(b=>b.onclick=()=>{
+    state.lang=b.dataset.lang; persist(); render();
+  });
+  const sp=document.getElementById('savePricesBtn');
+  if(sp) sp.onclick=()=>{
+    document.querySelectorAll('.price-input').forEach(inp=>{state.prices[inp.dataset.grade]=parseFloat(inp.value)||0;});
+    state.prices.effective=document.getElementById('s_eff').value;
+    state.prices.updated=(state.lang==='ar'?'تحديث يدوي بتاريخ ':'Manually updated ')+new Date().toLocaleDateString();
+    state.prices.manual=true;
+    persist();render();
+  };
+  const ch=document.getElementById('clearHistBtn');
+  if(ch) ch.onclick=()=>{if(confirm(t('confirmClear'))){state.trips=[];persist();render();}};
+}
+
+document.querySelector('nav.bottom button[data-v="home"]').classList.add('active');
+render();
+</script>
+</body>
+</html>
