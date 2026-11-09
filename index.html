@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>TankWise UAE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 html{scroll-padding-top:env(safe-area-inset-top,0px);}
-html,body{height:100%;}
+html,body{height:100%;touch-action:manipulation;}
 body{
   margin:0; background:var(--bg); color:var(--text);
   font-family:'Inter',-apple-system,sans-serif;
@@ -27,12 +27,7 @@ body{
 body.ar{font-family:'Tajawal','Inter',-apple-system,sans-serif;}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);}
 #app{max-width:480px;margin:0 auto;min-height:100%;position:relative;padding-bottom:84px;}
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,18,32,.92);backdrop-filter:blur(10px);padding:16px 18px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
-.app-icon{flex:none;width:38px;height:38px;border-radius:11px;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(163,230,53,.3);}
-.app-icon svg,.app-icon i{width:17px;height:17px;color:#0B1220;font-size:17px;}
-header.top h1{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;}
-header.top .sub{color:var(--muted);font-size:12.5px;margin-top:2px;}
-main{padding:14px 16px 20px;}
+main{padding:20px 16px 20px;}
 .view{display:none;animation:fade .2s ease;}
 .view.active{display:block;}
 @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
@@ -50,6 +45,7 @@ main{padding:14px 16px 20px;}
 label{font-size:12.5px;color:var(--muted);display:block;margin:10px 0 5px;}
 input,select{width:100%;background:#0E1A2C;border:1px solid var(--border);color:var(--text);padding:12px 12px;border-radius:12px;font-size:15px;font-family:inherit;}
 input:focus,select:focus{outline:none;border-color:var(--accent);}
+input:disabled{opacity:.5;cursor:not-allowed;}
 .btn{width:100%;padding:13px;border-radius:12px;border:none;font-weight:700;font-size:14.5px;cursor:pointer;font-family:inherit;}
 .btn-primary{background:var(--accent);color:#0B1220;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
@@ -73,24 +69,31 @@ nav.bottom .ic svg{width:21px;height:21px;}
 .small{font-size:11.5px;color:var(--muted);}
 .result-hero{background:linear-gradient(135deg,rgba(163,230,53,.12),rgba(163,230,53,.03));border:1px solid rgba(163,230,53,.25);border-radius:16px;padding:16px;margin-top:12px;}
 .lang-row{display:flex;gap:10px;margin-top:6px;}
-.lang-btn{flex:1;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0E1A2C;color:var(--text);font-family:inherit;font-weight:600;font-size:13.5px;cursor:pointer;}
-.lang-btn.active{border-color:var(--accent);background:rgba(163,230,53,.1);color:var(--accent);}
+.lang-btn,.econ-unit-btn,.v-econ-unit-btn{flex:1;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0E1A2C;color:var(--text);font-family:inherit;font-weight:600;font-size:13.5px;cursor:pointer;}
+.lang-btn.active,.econ-unit-btn.active,.v-econ-unit-btn.active{border-color:var(--accent);background:rgba(163,230,53,.1);color:var(--accent);}
+.grade-row{display:flex;gap:8px;}
+.grade-btn{flex:1;padding:10px 6px;border-radius:12px;border:1px solid var(--border);background:#0E1A2C;color:var(--text);font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.grade-btn.active{border-color:var(--accent);background:rgba(163,230,53,.1);color:var(--accent);}
+.grade-btn .gname{font-size:12px;font-weight:700;}
+.grade-btn .grate{font-size:10.5px;color:var(--muted);}
+.grade-btn.active .grate{color:var(--accent2);}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row .srow-title{font-weight:600;font-size:14.5px;}
+.settings-row .srow-sub{font-size:11.5px;color:var(--muted);margin-top:3px;}
+.settings-row .chev{color:var(--muted);font-size:16px;}
+.settings-back{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.settings-back button{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:4px;display:flex;}
+.settings-back h2{margin:0;font-size:17px;font-weight:800;}
+[dir="rtl"] .settings-back .backBtn i{transform:scaleX(-1);display:inline-block;}
 </style>
 </head>
 <body>
 <div id="app">
-  <header class="top">
-    <div class="app-icon"><i class="fa-solid fa-gas-pump"></i></div>
-    <div>
-      <h1 id="hdrTitle">TankWise UAE</h1>
-      <div class="sub" id="hdrSub">Smart petrol &amp; trip cost calculator</div>
-    </div>
-  </header>
   <main id="main"></main>
   <nav class="bottom">
     <button data-v="home"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span><span class="navlbl" data-k="home"></span></button>
     <button data-v="calc"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></span><span class="navlbl" data-k="calculator"></span></button>
-    <button data-v="vehicles"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-5A2 2 0 0 1 6.4 6.5h11.2A2 2 0 0 1 19.5 8l1.5 5"/><rect x="2.5" y="13" width="19" height="5" rx="1.5"/><circle cx="7" cy="18.5" r="1.5"/><circle cx="17" cy="18.5" r="1.5"/></svg></span><span class="navlbl" data-k="vehicles"></span></button>
     <button data-v="history"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><span class="navlbl" data-k="history"></span></button>
     <button data-v="settings"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="navlbl" data-k="settings"></span></button>
   </nav>
@@ -105,13 +108,16 @@ const I18N={
     thisMonth:'This Month',fuelSpending:'Fuel spending',vehicleEconomy:'Vehicle economy',
     recentTrips:'Recent Trips',noTrips:'No trips saved yet.',
     tripCostTab:'Trip Cost',fillUpTab:'Fill-up',
-    distanceKm:'Distance (km)',vehicleEconLbl:'Vehicle economy (km/L)',petrolGrade:'Petrol grade',
+    distanceKm:'Distance (km)',vehicleEconLbl:'Vehicle economy',petrolGrade:'Petrol grade',
+    tripName:'Trip name (optional)',
     currentLevelOpt:'Current petrol level (L, optional)',calculate:'Calculate',
     tripCost:'Trip cost',petrolNeeded:'Petrol needed',costPerKm:'Cost per km',petrolRemaining:'Petrol remaining',
     remainingRange:'Remaining range',saveTrip:'Save trip',saved:'Saved ✓',share:'Share',copied:'Copied ✓',
     validDistEcon:'Enter a valid distance and economy.',
     tankCapacity:'Tank capacity (L)',currentLevel:'Current petrol level (L)',targetFill:'Target fill',
     fillingCost:'Filling cost',litresRequired:'Litres required',levelAfter:'Level after refuel',
+    distanceSinceFill:'Distance since last fill (km, optional)',refillAmount:'Refill amount (AED)',full:'Full',
+    validAmount:'Enter a refill amount or select Full.',cappedNote:'Capped to tank capacity.',
     validTank:'Enter a valid tank capacity.',
     yourVehicles:'Your Vehicles',demo:'Demo',edit:'Edit',delete:'Delete',
     addVehicle:'Add Vehicle',editVehicle:'Edit Vehicle',vehicleName:'Vehicle name',manufacturer:'Manufacturer',
@@ -119,13 +125,20 @@ const I18N={
     pleaseEnterName:'Please enter a vehicle name.',
     analytics:'Analytics',totalFuelSpend:'Total fuel spend',totalDistance:'Total distance',
     totalFuelUsed:'Total fuel used',avgCostKm:'Avg cost / km',avgEfficiency:'Average efficiency',
-    allTrips:'All Trips',
+    allTrips:'All Trips',tripsTab:'Trips',refillTab:'Refills',allRefills:'All Refills',noRefills:'No refills saved yet.',
+    saveRefill:'Save refill',totalRefills:'Refills logged',totalLitresAdded:'Total litres added',totalRefillSpend:'Total refill spend',
     preferences:'Preferences',currency:'Currency',distanceUnit:'Distance unit',fuelUnit:'Fuel unit',
     theme:'Theme',kilometres:'Kilometres',litres:'Litres',dark:'Dark',defaultVehicle:'Default vehicle',
     language:'Language',priceOverride:'Petrol Prices (manual override)',
     noBackend:"Live backend price updates aren't wired up yet — set figures manually here.",
-    effectiveMonth:'Effective month',savePrices:'Save Prices',clearHistory:'Clear Trip History',
-    confirmClear:'Clear all saved trips? This cannot be undone.'},
+    effectiveMonth:'Effective month',savePrices:'Save Prices',clearHistory:'Clear History',
+    confirmClear:'Clear all saved trips and refills? This cannot be undone.',
+    myGarage:'My Garage',vehicleWord:'vehicle',vehiclesWord:'vehicles',addAnotherVehicle:'Add another vehicle',
+    defaultTag:'Default',petrolPricesRow:'Petrol Prices',managePricesDesc:'Manage UAE fuel prices and effective dates.',
+    dataSupport:'Data & Support',exportHistory:'Export history (CSV)',csvExported:'History exported.',
+    about:'About',appVersionLbl:'Version',
+    aboutDesc:'TankWise UAE helps you estimate trip costs, refuelling expenses and track your fuel spending across the UAE.',
+    support:'Support',supportDesc:'For feedback or questions, reach out via the app store listing or your administrator.'},
   ar:{appName:'تانك وايز الإمارات',tagline:'حاسبة ذكية لتكلفة الوقود والرحلات',
     home:'الرئيسية',calculator:'الحاسبة',vehicles:'المركبات',history:'السجل',settings:'الإعدادات',
     selectedVehicle:'المركبة المختارة',noVehicle:'لا توجد مركبة',
@@ -134,13 +147,16 @@ const I18N={
     thisMonth:'هذا الشهر',fuelSpending:'إنفاق الوقود',vehicleEconomy:'كفاءة المركبة',
     recentTrips:'الرحلات الأخيرة',noTrips:'لا توجد رحلات محفوظة بعد.',
     tripCostTab:'تكلفة الرحلة',fillUpTab:'التعبئة',
-    distanceKm:'المسافة (كم)',vehicleEconLbl:'كفاءة المركبة (كم/لتر)',petrolGrade:'نوع الوقود',
+    distanceKm:'المسافة (كم)',vehicleEconLbl:'كفاءة المركبة',petrolGrade:'نوع الوقود',
+    tripName:'اسم الرحلة (اختياري)',
     currentLevelOpt:'مستوى الوقود الحالي (لتر، اختياري)',calculate:'احسب',
     tripCost:'تكلفة الرحلة',petrolNeeded:'الوقود المطلوب',costPerKm:'التكلفة لكل كم',petrolRemaining:'الوقود المتبقي',
     remainingRange:'المدى المتبقي',saveTrip:'حفظ الرحلة',saved:'تم الحفظ ✓',share:'مشاركة',copied:'تم النسخ ✓',
     validDistEcon:'أدخل مسافة وكفاءة صحيحتين.',
     tankCapacity:'سعة الخزان (لتر)',currentLevel:'مستوى الوقود الحالي (لتر)',targetFill:'نسبة التعبئة المستهدفة',
     fillingCost:'تكلفة التعبئة',litresRequired:'اللترات المطلوبة',levelAfter:'المستوى بعد التعبئة',
+    distanceSinceFill:'المسافة منذ آخر تعبئة (كم، اختياري)',refillAmount:'مبلغ التعبئة (درهم)',full:'كامل',
+    validAmount:'أدخل مبلغ التعبئة أو اختر "كامل".',cappedNote:'تم تحديده وفق سعة الخزان.',
     validTank:'أدخل سعة خزان صحيحة.',
     yourVehicles:'مركباتك',demo:'تجريبي',edit:'تعديل',delete:'حذف',
     addVehicle:'إضافة مركبة',editVehicle:'تعديل المركبة',vehicleName:'اسم المركبة',manufacturer:'الشركة المصنعة',
@@ -148,13 +164,20 @@ const I18N={
     pleaseEnterName:'يرجى إدخال اسم المركبة.',
     analytics:'التحليلات',totalFuelSpend:'إجمالي إنفاق الوقود',totalDistance:'إجمالي المسافة',
     totalFuelUsed:'إجمالي الوقود المستهلك',avgCostKm:'متوسط التكلفة / كم',avgEfficiency:'متوسط الكفاءة',
-    allTrips:'جميع الرحلات',
+    allTrips:'جميع الرحلات',tripsTab:'الرحلات',refillTab:'التعبئات',allRefills:'جميع عمليات التعبئة',noRefills:'لا توجد عمليات تعبئة محفوظة بعد.',
+    saveRefill:'حفظ التعبئة',totalRefills:'عدد التعبئات',totalLitresAdded:'إجمالي اللترات المضافة',totalRefillSpend:'إجمالي إنفاق التعبئة',
     preferences:'التفضيلات',currency:'العملة',distanceUnit:'وحدة المسافة',fuelUnit:'وحدة الوقود',
     theme:'المظهر',kilometres:'كيلومتر',litres:'لتر',dark:'داكن',defaultVehicle:'المركبة الافتراضية',
     language:'اللغة',priceOverride:'أسعار الوقود (تعديل يدوي)',
     noBackend:'تحديثات الأسعار التلقائية غير مُفعّلة بعد — أدخل القيم يدويًا هنا.',
-    effectiveMonth:'الشهر الساري',savePrices:'حفظ الأسعار',clearHistory:'مسح سجل الرحلات',
-    confirmClear:'هل تريد مسح جميع الرحلات المحفوظة؟ لا يمكن التراجع عن هذا.'}
+    effectiveMonth:'الشهر الساري',savePrices:'حفظ الأسعار',clearHistory:'مسح السجل',
+    confirmClear:'هل تريد مسح جميع الرحلات والتعبئات المحفوظة؟ لا يمكن التراجع عن هذا.',
+    myGarage:'مرآبي',vehicleWord:'مركبة',vehiclesWord:'مركبات',addAnotherVehicle:'إضافة مركبة أخرى',
+    defaultTag:'افتراضي',petrolPricesRow:'أسعار الوقود',managePricesDesc:'إدارة أسعار الوقود في الإمارات وتواريخ سريانها.',
+    dataSupport:'البيانات والدعم',exportHistory:'تصدير السجل (CSV)',csvExported:'تم تصدير السجل.',
+    about:'حول التطبيق',appVersionLbl:'الإصدار',
+    aboutDesc:'يساعدك TankWise UAE على تقدير تكاليف الرحلات ومصاريف التعبئة وتتبع إنفاقك على الوقود في جميع أنحاء الإمارات.',
+    support:'الدعم',supportDesc:'للملاحظات أو الاستفسارات، تواصل عبر صفحة التطبيق أو مسؤول النظام لديك.'}
 };
 const DEMO_VEHICLE={id:'demo1',name:'My Corolla',make:'Toyota',model:'Corolla Hybrid',year:2025,tank:43,economy:20.9,grade:'Special 95',demo:true};
 const DEMO_PRICES={'E-Plus 91':3.97,'Special 95':4.04,'Super 98':4.16,effective:'November 2026',updated:'Demo data — set manually in Settings',manual:true};
@@ -165,11 +188,12 @@ let state={
   trips: load('tw_trips',[]),
   prices: load('tw_prices',DEMO_PRICES),
   activeVehicleId: load('tw_active', DEMO_VEHICLE.id),
+  refills: load('tw_refills',[]),
   lang: load('tw_lang','en'),
-  calcTab:'trip', view:'home'
+  calcTab:'trip', view:'home', historyTab:'trips', settingsPage:'main'
 };
 function t(k){return (I18N[state.lang]&&I18N[state.lang][k])||I18N.en[k]||k;}
-function persist(){save('tw_vehicles',state.vehicles);save('tw_trips',state.trips);save('tw_prices',state.prices);save('tw_active',state.activeVehicleId);save('tw_lang',state.lang);}
+function persist(){save('tw_vehicles',state.vehicles);save('tw_trips',state.trips);save('tw_refills',state.refills);save('tw_prices',state.prices);save('tw_active',state.activeVehicleId);save('tw_lang',state.lang);}
 function aed(n){return 'AED '+(isFinite(n)?n:0).toFixed(2);}
 function activeVehicle(){return state.vehicles.find(v=>v.id===state.activeVehicleId)||state.vehicles[0];}
 function priceFor(grade){return state.prices[grade]??0;}
@@ -178,12 +202,11 @@ function applyLangChrome(){
   document.documentElement.lang=state.lang;
   document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';
   document.body.classList.toggle('ar',state.lang==='ar');
-  document.getElementById('hdrTitle').textContent=t('appName');
-  document.getElementById('hdrSub').textContent=t('tagline');
+  document.title=t('appName');
   document.querySelectorAll('.navlbl').forEach(el=>el.textContent=t(el.dataset.k));
 }
 
-function setView(v){state.view=v;document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));render();}
+function setView(v){state.view=v;if(v==='settings')state.settingsPage='main';document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));render();}
 document.querySelectorAll('nav.bottom button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
 
 function render(){
@@ -191,7 +214,6 @@ function render(){
   const m=document.getElementById('main');
   if(state.view==='home') m.innerHTML=homeView();
   else if(state.view==='calc') m.innerHTML=calcView();
-  else if(state.view==='vehicles') m.innerHTML=vehiclesView();
   else if(state.view==='history') m.innerHTML=historyView();
   else if(state.view==='settings') m.innerHTML=settingsView();
   bindDynamic();
@@ -233,7 +255,7 @@ function homeView(){
   </div>
   <div class="card">
     <h3>${t('recentTrips')}</h3>
-    ${recent.length? recent.map(tr=>`<div class="hist-item"><span>${tr.distance} km</span><span class="small">${tr.date}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
+    ${recent.length? recent.map(tr=>`<div class="hist-item"><span>${tr.name?tr.name:tr.distance+' km'}</span><span class="small">${tr.date}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
   </div>`;
 }
 
@@ -250,12 +272,25 @@ function tripCalc(){
   const v=activeVehicle();
   return `
   <div class="card">
+    <label>${t('tripName')}</label><input id="t_name" placeholder="${state.lang==='ar'?'مثال: طريق العمل':'e.g. Commute to work'}">
     <label>${t('distanceKm')}</label><input type="number" id="t_dist" placeholder="45" min="0">
-    <label>${t('vehicleEconLbl')}</label><input type="number" id="t_econ" value="${v?v.economy:''}" min="0.1">
+    <label>${t('vehicleEconLbl')}</label>
+    <div class="row" style="gap:8px;align-items:stretch;">
+      <input type="number" id="t_econ" value="${v?v.economy:''}" min="0.1" style="flex:2">
+      <div class="lang-row" style="flex:1;margin-top:0;">
+        <button type="button" class="econ-unit-btn active" data-unit="kml">km/L</button>
+        <button type="button" class="econ-unit-btn" data-unit="l100">L/100km</button>
+      </div>
+    </div>
+    <input type="hidden" id="t_econ_unit" value="kml">
     <label>${t('petrolGrade')}</label>
-    <select id="t_grade">${['E-Plus 91','Special 95','Super 98'].map(g=>`<option ${v&&v.grade===g?'selected':''}>${g}</option>`).join('')}</select>
+    <div class="grade-row">
+      ${['E-Plus 91','Special 95','Super 98'].map(g=>`<button type="button" class="grade-btn t-grade-btn ${v&&v.grade===g?'active':''}" data-grade="${g}"><span class="gname">${g}</span><span class="grate">${priceFor(g).toFixed(2)} AED/L</span></button>`).join('')}
+    </div>
+    <input type="hidden" id="t_grade" value="${v?v.grade:'Special 95'}">
     <label>${t('currentLevelOpt')}</label><input type="number" id="t_level" placeholder="20" min="0">
     <button class="btn btn-primary" style="margin-top:14px" id="calcTripBtn">${t('calculate')}</button>
+    <button class="btn btn-ghost" style="margin-top:10px" id="quickSaveTripBtn">${t('saveTrip')}</button>
   </div>
   <div id="tripResult"></div>`;
 }
@@ -264,12 +299,20 @@ function fillCalc(){
   return `
   <div class="card">
     <label>${t('tankCapacity')}</label><input type="number" id="f_tank" value="${v?v.tank:''}" min="1">
-    <label>${t('currentLevel')}</label><input type="number" id="f_level" placeholder="10" min="0">
-    <label>${t('targetFill')}</label>
-    <select id="f_target"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option></select>
+    <label>${t('distanceSinceFill')}</label><input type="number" id="f_distance" placeholder="150" min="0">
+    <label>${t('refillAmount')}</label>
+    <div class="row" style="gap:8px;align-items:stretch;">
+      <input type="number" id="f_amount" placeholder="100" min="0" style="flex:2">
+      <button type="button" class="econ-unit-btn" id="fullBtn" style="flex:1;">${t('full')}</button>
+    </div>
+    <input type="hidden" id="f_full" value="0">
     <label>${t('petrolGrade')}</label>
-    <select id="f_grade">${['E-Plus 91','Special 95','Super 98'].map(g=>`<option ${v&&v.grade===g?'selected':''}>${g}</option>`).join('')}</select>
+    <div class="grade-row">
+      ${['E-Plus 91','Special 95','Super 98'].map(g=>`<button type="button" class="grade-btn f-grade-btn ${v&&v.grade===g?'active':''}" data-grade="${g}"><span class="gname">${g}</span><span class="grate">${priceFor(g).toFixed(2)} AED/L</span></button>`).join('')}
+    </div>
+    <input type="hidden" id="f_grade" value="${v?v.grade:'Special 95'}">
     <button class="btn btn-primary" style="margin-top:14px" id="calcFillBtn">${t('calculate')}</button>
+    <button class="btn btn-ghost" style="margin-top:10px" id="quickSaveFillBtn">${t('saveRefill')}</button>
   </div>
   <div id="fillResult"></div>`;
 }
@@ -280,9 +323,29 @@ function bindDynamic(){
   if(tf) tf.onclick=()=>{state.calcTab='fill';render();};
 
   const ctb=document.getElementById('calcTripBtn');
+  document.querySelectorAll('.econ-unit-btn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.econ-unit-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const unit=b.dataset.unit;
+    const hidden=document.getElementById('t_econ_unit');
+    if(hidden.value!==unit){
+      const econInput=document.getElementById('t_econ');
+      const val=parseFloat(econInput.value);
+      if(val>0) econInput.value=(100/val).toFixed(2);
+    }
+    hidden.value=unit;
+  });
+  document.querySelectorAll('.t-grade-btn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.t-grade-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('t_grade').value=b.dataset.grade;
+  });
   if(ctb) ctb.onclick=()=>{
+    const name=document.getElementById('t_name').value.trim();
     const dist=parseFloat(document.getElementById('t_dist').value)||0;
-    const econ=parseFloat(document.getElementById('t_econ').value)||0;
+    const econRaw=parseFloat(document.getElementById('t_econ').value)||0;
+    const econUnit=document.getElementById('t_econ_unit').value;
+    const econ=econUnit==='l100'?(econRaw>0?100/econRaw:0):econRaw;
     const grade=document.getElementById('t_grade').value;
     const level=parseFloat(document.getElementById('t_level').value);
     if(dist<=0||econ<=0){document.getElementById('tripResult').innerHTML=`<div class="card"><div class="empty">${t('validDistEcon')}</div></div>`;return;}
@@ -296,7 +359,7 @@ function bindDynamic(){
       remain=`<div class="row" style="margin-top:8px"><span class="small">${t('petrolRemaining')}</span><span>${after.toFixed(1)} L</span></div>`;
       remainRange=`<div class="row"><span class="small">${t('remainingRange')}</span><span>${Math.max(0,after*econ).toFixed(0)} km</span></div>`;
     }
-    window._lastTrip={distance:dist,cost,grade,fuel:fuelNeeded,date:new Date().toISOString().slice(0,10)};
+    window._lastTrip={name,distance:dist,cost,grade,fuel:fuelNeeded,date:new Date().toISOString().slice(0,10)};
     document.getElementById('tripResult').innerHTML=`
     <div class="result-hero">
       <div class="small">${t('tripCost')}</div><div class="big">${aed(cost)}</div>
@@ -321,31 +384,91 @@ function bindDynamic(){
   };
 
   const cfb=document.getElementById('calcFillBtn');
+  const fullBtn=document.getElementById('fullBtn');
+  if(fullBtn) fullBtn.onclick=()=>{
+    const hidden=document.getElementById('f_full');
+    const isFull=hidden.value==='1';
+    hidden.value=isFull?'0':'1';
+    fullBtn.classList.toggle('active',!isFull);
+    const amtInput=document.getElementById('f_amount');
+    amtInput.disabled=!isFull;
+  };
+  document.querySelectorAll('.f-grade-btn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.f-grade-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('f_grade').value=b.dataset.grade;
+  });
   if(cfb) cfb.onclick=()=>{
+    const v=activeVehicle();
     const tank=parseFloat(document.getElementById('f_tank').value)||0;
-    const level=parseFloat(document.getElementById('f_level').value)||0;
-    const target=parseFloat(document.getElementById('f_target').value);
+    const distance=parseFloat(document.getElementById('f_distance').value);
+    const econ=v?v.economy:0;
+    let level=0;
+    if(!isNaN(distance) && econ>0) level=Math.max(0, Math.min(tank, tank-(distance/econ)));
     const grade=document.getElementById('f_grade').value;
+    const isFull=document.getElementById('f_full').value==='1';
     if(tank<=0){document.getElementById('fillResult').innerHTML=`<div class="card"><div class="empty">${t('validTank')}</div></div>`;return;}
-    const targetL=Math.min(tank, tank*target);
-    const litres=Math.max(0, Math.min(targetL-level, tank-level));
     const price=priceFor(grade);
+    const remainingCap=Math.max(0, tank-level);
+    let litres=0, capped=false;
+    if(isFull){
+      litres=remainingCap;
+    } else {
+      const amount=parseFloat(document.getElementById('f_amount').value)||0;
+      if(amount<=0){document.getElementById('fillResult').innerHTML=`<div class="card"><div class="empty">${t('validAmount')}</div></div>`;return;}
+      litres=price>0?amount/price:0;
+      if(litres>remainingCap){litres=remainingCap;capped=true;}
+    }
     const cost=litres*price;
     const after=level+litres;
-    const pct=(after/tank*100).toFixed(0);
+    const pct=tank>0?(after/tank*100).toFixed(0):0;
+    window._lastFill={litres,cost,grade,date:new Date().toISOString().slice(0,10)};
+    const cappedNote=capped?`<div class="small" style="margin-top:6px;">${t('cappedNote')}</div>`:'';
     document.getElementById('fillResult').innerHTML=`
     <div class="result-hero">
       <div class="small">${t('fillingCost')}</div><div class="big">${aed(cost)}</div>
       <div class="row" style="margin-top:10px"><span class="small">${t('litresRequired')}</span><span>${litres.toFixed(1)} L</span></div>
       <div class="row"><span class="small">${t('levelAfter')}</span><span>${after.toFixed(1)} L (${pct}%)</span></div>
+      ${cappedNote}
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="saveFillBtn">${t('saveRefill')}</button>
+        <button class="btn btn-ghost" id="shareFillBtn">${t('share')}</button>
+      </div>
     </div>`;
+    document.getElementById('saveFillBtn').onclick=()=>{
+      state.refills.push({...window._lastFill, id:Date.now()+''});
+      persist();
+      document.getElementById('saveFillBtn').textContent=t('saved');
+    };
+    document.getElementById('shareFillBtn').onclick=()=>{
+      const txt=`TankWise UAE: ${litres.toFixed(1)} L, ${aed(cost)} (${grade})`;
+      if(navigator.share){navigator.share({text:txt}).catch(()=>{});}
+      else{navigator.clipboard?.writeText(txt);document.getElementById('shareFillBtn').textContent=t('copied');}
+    };
+  };
+
+  const htt=document.getElementById('histTripsTab'), htr=document.getElementById('histRefillTab');
+  if(htt) htt.onclick=()=>{state.historyTab='trips';render();};
+  if(htr) htr.onclick=()=>{state.historyTab='refill';render();};
+
+  const qst=document.getElementById('quickSaveTripBtn');
+  if(qst) qst.onclick=()=>{
+    document.getElementById('calcTripBtn').click();
+    const sb=document.getElementById('saveTripBtn');
+    if(sb) sb.click();
+  };
+  const qsf=document.getElementById('quickSaveFillBtn');
+  if(qsf) qsf.onclick=()=>{
+    document.getElementById('calcFillBtn').click();
+    const sb=document.getElementById('saveFillBtn');
+    if(sb) sb.click();
   };
 
   bindVehicleEvents();
   bindSettingsEvents();
 }
 
-function vehiclesView(){
+function vehiclesSection(){
   return `
   <div class="card">
     <h3>${t('yourVehicles')}</h3>
@@ -372,10 +495,20 @@ function vehiclesView(){
       <div><label>${t('year')}</label><input type="number" id="v_year"></div>
       <div><label>${t('tankCapacity')}</label><input type="number" id="v_tank"></div>
     </div>
-    <div class="grid2">
-      <div><label>${t('economyLbl')}</label><input type="number" step="0.1" id="v_econ"></div>
-      <div><label>${t('preferredGrade')}</label><select id="v_grade"><option>E-Plus 91</option><option>Special 95</option><option>Super 98</option></select></div>
+    <label>${t('economyLbl')}</label>
+    <div class="row" style="gap:8px;align-items:stretch;">
+      <input type="number" step="0.1" id="v_econ" style="flex:2">
+      <div class="lang-row" style="flex:1;margin-top:0;">
+        <button type="button" class="v-econ-unit-btn active" data-unit="kml">km/L</button>
+        <button type="button" class="v-econ-unit-btn" data-unit="l100">L/100km</button>
+      </div>
     </div>
+    <input type="hidden" id="v_econ_unit" value="kml">
+    <label>${t('preferredGrade')}</label>
+    <div class="grade-row">
+      ${['E-Plus 91','Special 95','Super 98'].map((g,i)=>`<button type="button" class="grade-btn v-grade-btn ${i===0?'active':''}" data-grade="${g}"><span class="gname">${g}</span><span class="grate">${priceFor(g).toFixed(2)} AED/L</span></button>`).join('')}
+    </div>
+    <input type="hidden" id="v_grade" value="E-Plus 91">
     <button class="btn btn-primary" style="margin-top:14px" id="saveVehicleBtn">${t('saveVehicle')}</button>
   </div>`;
 }
@@ -401,16 +534,39 @@ function bindVehicleEvents(){
     document.getElementById('v_year').value=v.year;
     document.getElementById('v_tank').value=v.tank;
     document.getElementById('v_econ').value=v.economy;
+    document.getElementById('v_econ_unit').value='kml';
+    document.querySelectorAll('.v-econ-unit-btn').forEach(b=>b.classList.toggle('active', b.dataset.unit==='kml'));
     document.getElementById('v_grade').value=v.grade;
+    document.querySelectorAll('.v-grade-btn').forEach(b=>b.classList.toggle('active', b.dataset.grade===v.grade));
+  });
+  document.querySelectorAll('.v-econ-unit-btn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.v-econ-unit-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const unit=b.dataset.unit;
+    const hidden=document.getElementById('v_econ_unit');
+    if(hidden.value!==unit){
+      const econInput=document.getElementById('v_econ');
+      const val=parseFloat(econInput.value);
+      if(val>0) econInput.value=(100/val).toFixed(2);
+    }
+    hidden.value=unit;
+  });
+  document.querySelectorAll('.v-grade-btn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.v-grade-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('v_grade').value=b.dataset.grade;
   });
   const sv=document.getElementById('saveVehicleBtn');
   if(sv) sv.onclick=()=>{
     const id=document.getElementById('v_id').value || Date.now()+'';
     const name=document.getElementById('v_name').value.trim();
     if(!name){alert(t('pleaseEnterName'));return;}
+    const econRaw=parseFloat(document.getElementById('v_econ').value)||0;
+    const econUnit=document.getElementById('v_econ_unit').value;
+    const economy=econUnit==='l100'?(econRaw>0?100/econRaw:0):econRaw;
     const vh={id,name,make:document.getElementById('v_make').value,model:document.getElementById('v_model').value,
       year:parseInt(document.getElementById('v_year').value)||'',tank:parseFloat(document.getElementById('v_tank').value)||0,
-      economy:parseFloat(document.getElementById('v_econ').value)||0, grade:document.getElementById('v_grade').value};
+      economy, grade:document.getElementById('v_grade').value};
     const idx=state.vehicles.findIndex(v=>v.id===id);
     if(idx>-1) state.vehicles[idx]=vh; else {state.vehicles.push(vh); state.activeVehicleId=id;}
     persist();render();
@@ -418,6 +574,15 @@ function bindVehicleEvents(){
 }
 
 function historyView(){
+  const tabs=`
+  <div class="tabbar">
+    <button id="histTripsTab" class="${state.historyTab==='trips'?'active':''}">${t('tripsTab')}</button>
+    <button id="histRefillTab" class="${state.historyTab==='refill'?'active':''}">${t('refillTab')}</button>
+  </div>`;
+  if(state.historyTab==='refill') return tabs+refillHistoryView();
+  return tabs+tripsHistoryView();
+}
+function tripsHistoryView(){
   const trips=[...state.trips].reverse();
   const totalKm=state.trips.reduce((s,tr)=>s+tr.distance,0);
   const totalFuel=state.trips.reduce((s,tr)=>s+tr.fuel,0);
@@ -435,13 +600,78 @@ function historyView(){
     <div class="small" style="margin-top:10px;">${t('avgEfficiency')}: ${avgEcon} km/L</div>
   </div>
   <div class="card"><h3>${t('allTrips')}</h3>
-  ${trips.length? trips.map(tr=>`<div class="hist-item"><span>${tr.date}</span><span>${tr.distance} km · ${tr.grade}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
+  ${trips.length? trips.map(tr=>`<div class="hist-item"><span>${tr.name?tr.name+' · ':''}${tr.date}</span><span>${tr.distance} km · ${tr.grade}</span><span>${aed(tr.cost)}</span></div>`).join('') : `<div class="empty">${t('noTrips')}</div>`}
+  </div>`;
+}
+function refillHistoryView(){
+  const refills=[...state.refills].reverse();
+  const totalLitres=state.refills.reduce((s,r)=>s+r.litres,0);
+  const totalCost=state.refills.reduce((s,r)=>s+r.cost,0);
+  return `
+  <div class="card"><h3>${t('analytics')}</h3>
+    <div class="grid2">
+      <div class="stat"><div class="n">${state.refills.length}</div><div class="l">${t('totalRefills')}</div></div>
+      <div class="stat"><div class="n">${totalLitres.toFixed(1)} L</div><div class="l">${t('totalLitresAdded')}</div></div>
+      <div class="stat"><div class="n">${aed(totalCost)}</div><div class="l">${t('totalRefillSpend')}</div></div>
+    </div>
+  </div>
+  <div class="card"><h3>${t('allRefills')}</h3>
+  ${refills.length? refills.map(r=>`<div class="hist-item"><span>${r.date}</span><span>${r.litres.toFixed(1)} L · ${r.grade}</span><span>${aed(r.cost)}</span></div>`).join('') : `<div class="empty">${t('noRefills')}</div>`}
   </div>`;
 }
 
+function backHeader(titleKey){
+  return `<div class="settings-back"><button type="button" class="backBtn" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button><h2>${t(titleKey)}</h2></div>`;
+}
+
 function settingsView(){
+  if(state.settingsPage==='preferences') return preferencesPage();
+  if(state.settingsPage==='garage') return garagePage();
+  if(state.settingsPage==='prices') return pricesPage();
+  if(state.settingsPage==='about') return aboutPage();
+  return settingsMain();
+}
+
+function settingsMain(){
+  const dv=activeVehicle();
+  const count=state.vehicles.length;
+  const vehicleCard = dv ? `
+    <div class="vcard selected" id="goGarageDefault" style="cursor:pointer;margin-top:10px;">
+      <div class="row"><strong>${dv.name}</strong><span class="pill">${t('defaultTag')}</span></div>
+      <div class="small">${dv.make} ${dv.model} \u00b7 ${dv.year}</div>
+      <div class="small">${dv.tank} L \u00b7 ${dv.economy} km/L</div>
+    </div>` : `<div class="empty" style="margin-top:10px;">${t('noVehicle')}</div>`;
   return `
-  <div class="card"><h3>${t('preferences')}</h3>
+  <div class="card">
+    <div class="settings-row" id="goPreferences">
+      <div><div class="srow-title">${t('preferences')}</div><div class="srow-sub">${t('currency')} \u00b7 ${t('kilometres')} \u00b7 ${t('dark')} \u00b7 ${t('language')}</div></div>
+      <span class="chev">\u203a</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row"><h3 style="margin:0">${t('myGarage')}</h3><span class="pill muted">${count} ${count===1?t('vehicleWord'):t('vehiclesWord')}</span></div>
+    ${vehicleCard}
+    <div class="settings-row" id="goGarageAdd" style="border-top:1px solid var(--border);margin-top:10px;padding-top:12px;">
+      <div class="srow-title" style="color:var(--accent)">+ ${t('addAnotherVehicle')}</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="settings-row" id="goPrices">
+      <div><div class="srow-title">${t('petrolPricesRow')}</div><div class="srow-sub">${t('managePricesDesc')}</div></div>
+      <span class="pill ${state.prices.manual?'muted':''}">${state.prices.manual?t('manualDemo'):t('live')}</span>
+    </div>
+  </div>
+  <div class="card">
+    <h3>${t('dataSupport')}</h3>
+    <div class="settings-row" id="clearHistBtn"><div class="srow-title" style="color:var(--danger)">${t('clearHistory')}</div></div>
+    <div class="settings-row" id="exportCsvBtn"><div class="srow-title">${t('exportHistory')}</div></div>
+    <div class="settings-row" id="goAbout"><div><div class="srow-title">${t('about')}</div></div><span class="chev">\u203a</span></div>
+  </div>`;
+}
+
+function preferencesPage(){
+  return backHeader('preferences')+`
+  <div class="card">
     <div class="row"><span class="small">${t('currency')}</span><span class="pill">AED</span></div>
     <div class="row" style="margin-top:8px"><span class="small">${t('distanceUnit')}</span><span class="pill">${t('kilometres')}</span></div>
     <div class="row" style="margin-top:8px"><span class="small">${t('fuelUnit')}</span><span class="pill">${t('litres')}</span></div>
@@ -451,20 +681,64 @@ function settingsView(){
     <label>${t('language')}</label>
     <div class="lang-row">
       <button type="button" class="lang-btn ${state.lang==='en'?'active':''}" data-lang="en">English</button>
-      <button type="button" class="lang-btn ${state.lang==='ar'?'active':''}" data-lang="ar">العربية</button>
+      <button type="button" class="lang-btn ${state.lang==='ar'?'active':''}" data-lang="ar">\u0627\u0644\u0639\u0631\u0628\u064a\u0629</button>
     </div>
-  </div>
-  <div class="card"><h3>${t('priceOverride')}</h3>
+  </div>`;
+}
+
+function garagePage(){
+  return backHeader('myGarage')+vehiclesSection();
+}
+
+function pricesPage(){
+  return backHeader('petrolPricesRow')+`
+  <div class="card">
     <div class="small">${t('noBackend')}</div>
     ${['E-Plus 91','Special 95','Super 98'].map(g=>`<label>${g} (AED/L)</label><input type="number" step="0.01" class="price-input" data-grade="${g}" value="${priceFor(g)}">`).join('')}
     <label>${t('effectiveMonth')}</label><input id="s_eff" value="${state.prices.effective}">
     <button class="btn btn-primary" style="margin-top:14px" id="savePricesBtn">${t('savePrices')}</button>
-  </div>
-  <div class="card">
-    <button class="btn btn-danger" id="clearHistBtn">${t('clearHistory')}</button>
   </div>`;
 }
+
+function aboutPage(){
+  return backHeader('about')+`
+  <div class="card">
+    <div class="row"><span class="small">${t('appVersionLbl')}</span><span class="pill">1.0.0</span></div>
+    <div class="small" style="margin-top:10px;">${t('aboutDesc')}</div>
+  </div>
+  <div class="card">
+    <h3>${t('support')}</h3>
+    <div class="small">${t('supportDesc')}</div>
+  </div>`;
+}
+
+function csvEscape(s){ s=String(s==null?'':s); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+async function exportHistoryCsv(){
+  const rows=[['Type','Date','Name','Distance (km)','Litres','Grade','Cost (AED)']];
+  state.trips.forEach(tr=>rows.push(['Trip',tr.date,tr.name||'',tr.distance,tr.fuel.toFixed(2),tr.grade,tr.cost.toFixed(2)]));
+  state.refills.forEach(r=>rows.push(['Refill',r.date,'','',r.litres.toFixed(2),r.grade,r.cost.toFixed(2)]));
+  const csv=rows.map(r=>r.map(csvEscape).join(',')).join('\n');
+  try{
+    const downloads=window.claude?await window.claude.use('downloads'):null;
+    if(downloads){ await downloads.save({filename:'tankwise-history.csv', data:csv}); return; }
+  }catch(e){}
+  try{ await navigator.clipboard.writeText(csv); alert(t('csvExported')); }catch(e){}
+}
+
 function bindSettingsEvents(){
+  const back=document.querySelector('.backBtn');
+  if(back) back.onclick=()=>{state.settingsPage='main';render();};
+  const goPref=document.getElementById('goPreferences');
+  if(goPref) goPref.onclick=()=>{state.settingsPage='preferences';render();};
+  const goGD=document.getElementById('goGarageDefault');
+  if(goGD) goGD.onclick=()=>{state.settingsPage='garage';render();};
+  const goGA=document.getElementById('goGarageAdd');
+  if(goGA) goGA.onclick=()=>{state.settingsPage='garage';render();};
+  const goPrices=document.getElementById('goPrices');
+  if(goPrices) goPrices.onclick=()=>{state.settingsPage='prices';render();};
+  const goAbout=document.getElementById('goAbout');
+  if(goAbout) goAbout.onclick=()=>{state.settingsPage='about';render();};
+
   const sd=document.getElementById('s_default');
   if(sd) sd.onchange=(e)=>{state.activeVehicleId=e.target.value;persist();};
   document.querySelectorAll('.lang-btn').forEach(b=>b.onclick=()=>{
@@ -474,16 +748,26 @@ function bindSettingsEvents(){
   if(sp) sp.onclick=()=>{
     document.querySelectorAll('.price-input').forEach(inp=>{state.prices[inp.dataset.grade]=parseFloat(inp.value)||0;});
     state.prices.effective=document.getElementById('s_eff').value;
-    state.prices.updated=(state.lang==='ar'?'تحديث يدوي بتاريخ ':'Manually updated ')+new Date().toLocaleDateString();
+    state.prices.updated=(state.lang==='ar'?'\u062a\u062d\u062f\u064a\u062b \u064a\u062f\u0648\u064a \u0628\u062a\u0627\u0631\u064a\u062e ':'Manually updated ')+new Date().toLocaleDateString();
     state.prices.manual=true;
     persist();render();
   };
   const ch=document.getElementById('clearHistBtn');
-  if(ch) ch.onclick=()=>{if(confirm(t('confirmClear'))){state.trips=[];persist();render();}};
+  if(ch) ch.onclick=()=>{if(confirm(t('confirmClear'))){state.trips=[];state.refills=[];persist();render();}};
+  const ex=document.getElementById('exportCsvBtn');
+  if(ex) ex.onclick=()=>{exportHistoryCsv();};
 }
 
 document.querySelector('nav.bottom button[data-v="home"]').classList.add('active');
 render();
+document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1)e.preventDefault();},{passive:false});
+document.addEventListener('gesturestart',e=>e.preventDefault());
+let _lastTouchEnd=0;
+document.addEventListener('touchend',e=>{
+  const now=Date.now();
+  if(now-_lastTouchEnd<=300)e.preventDefault();
+  _lastTouchEnd=now;
+},{passive:false});
 </script>
 </body>
 </html>
